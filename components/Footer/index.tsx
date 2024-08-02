@@ -28,9 +28,7 @@ const FOOTER_LINKS: Link[] = [
 
 export default function Footer() {
   return (
-    <footer
-      className={`flex h-14 items-center justify-between px-4 text-black lg:px-6`}
-    >
+    <footer className="flex h-14 items-center justify-between px-4 text-black lg:px-6">
       <p className="text-xs text-muted-foreground">
         &copy; {CURRENT_YEAR} Yuchan Kang. All rights reserved.
       </p>
@@ -39,7 +37,7 @@ export default function Footer() {
           <a
             key={v.key}
             href={v.link}
-            className="text-xs underline-offset-4 hover:underline"
+            className="text-xs text-muted-foreground underline-offset-4 hover:underline"
             target="_blank"
             rel="noopener noreferrer"
           >
