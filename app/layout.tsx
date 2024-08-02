@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { Noto_Sans_JP } from 'next/font/google';
 import './globals.css';
-import { ThemeProvider } from 'next-themes';
+import { ThemeProvider } from '@/components/theme-provider';
+import Header from '@/components/Header';
 
 const noto_sans_jp = Noto_Sans_JP({ subsets: ['latin'] });
 
@@ -16,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
+    <html lang="ja" suppressHydrationWarning>
       <body className={noto_sans_jp.className}>
         <ThemeProvider
           attribute="class"
@@ -24,7 +25,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <Header />
+          <main>{children}</main>
         </ThemeProvider>
       </body>
     </html>

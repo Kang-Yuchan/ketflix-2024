@@ -1,0 +1,46 @@
+'use client';
+
+import { TerminalIcon } from '@/components/icons/terminal-icon';
+import { Button } from '@/components/ui/button';
+import { useTheme } from 'next-themes';
+import { SunIcon } from '@/components/icons/sun-icon';
+import { MoonIcon } from '@/components/icons/moon-icon';
+import Link from 'next/link';
+
+export default function Header() {
+  const { setTheme, theme } = useTheme();
+  const isDarkMode = theme === 'dark';
+
+  const handleClickThemeToggle = () => {
+    return setTheme(isDarkMode ? 'light' : 'dark');
+  };
+
+  return (
+    <header className="flex h-14 items-center justify-between bg-white px-4 text-black lg:px-6">
+      <Link href="#" prefetch={false} className="flex items-center">
+        <TerminalIcon className="ml-2 text-lg" />
+        <span className="ml-2 text-lg font-bold">maku</span>
+      </Link>
+      <div className="flex gap-4">
+        <Button
+          type="button"
+          onClick={handleClickThemeToggle}
+          className="bg-white hover:bg-slate-200"
+        >
+          {isDarkMode ? (
+            <SunIcon className="h-5 w-5 fill-black" />
+          ) : (
+            <MoonIcon className="h-5 w-5 fill-black" />
+          )}
+        </Button>
+        <Link
+          href="/projects"
+          className="inline-flex h-9 items-center justify-center rounded-md bg-black px-4 py-2 text-sm font-medium text-primary-foreground text-white shadow transition-colors hover:bg-white hover:text-black focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+          prefetch={false}
+        >
+          View Projects
+        </Link>
+      </div>
+    </header>
+  );
+}
