@@ -1,17 +1,7 @@
 'use client';
 
+import { Project } from '@/types/types';
 import useSWR from 'swr';
-
-export type Project = {
-  id: number;
-  created_at: string;
-  image_url: string;
-  title: string;
-  description: string;
-  is_in_website: boolean;
-  link: string;
-  badges: string[];
-};
 
 const fetcher = (url: string) =>
   fetch(url).then((res) => res.json() as Promise<Project[]>);
