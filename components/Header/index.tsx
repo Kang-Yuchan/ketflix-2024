@@ -16,7 +16,7 @@ export default function Header() {
   };
 
   return (
-    <header className="flex h-14 items-center justify-between bg-white px-4 text-[#121212] lg:px-6">
+    <header className="sticky top-0 z-10 flex h-14 items-center justify-between bg-white px-4 text-[#121212] lg:px-6">
       <Link href="/" prefetch={false} className="flex items-center">
         <TerminalIcon className="ml-2 text-lg" />
         <span className="ml-2 text-lg font-bold">maku</span>
