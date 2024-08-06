@@ -14,7 +14,7 @@ const useUser = () => {
   });
 
   useEffect(() => {
-    if (user) {
+    if (user && user.id) {
       setCachedUser(user);
       localStorage.setItem('user', JSON.stringify(user));
     } else {

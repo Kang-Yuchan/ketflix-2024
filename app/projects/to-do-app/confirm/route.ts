@@ -1,0 +1,21 @@
+import { createServerSideClient } from '@/lib/supabase/server';
+import { NextResponse } from 'next/server';
+
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+
+  const code = searchParams.get('code');
+  const next = searchParams.get('next');
+
+  if (code) {
+    const supabase = createServerSideClient();
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+
+    if (error) {
+      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_HOME_URL}`);
+    }
+    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_HOME_URL}${next}`);
+  }
+
+  return NextResponse.redirect(`${process.env.NEXT_PUBLIC_HOME_URL}`);
+}
