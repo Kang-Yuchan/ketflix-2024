@@ -13,17 +13,33 @@ export const getTodos = async (userId: string) => {
   return result.data;
 };
 
-export const createTodos = async (task: string) => {
+export const createTodos = async (userId: string, task: string) => {
   const supabase = createServerSideClient();
   const result = await supabase
     .from('todos')
     .insert({
       task,
+      user_id: userId,
     })
+    .select('*');
+
+  return result.data;
+};
+
+export const updateTodoIsCompleted = async (
+  id: number,
+  is_complete: boolean,
+) => {
+  const supabase = createServerSideClient();
+  const result = await supabase
+    .from('todos')
+    .update({
+      is_complete,
+      updated_at: new Date().toISOString(),
+    })
+    .eq('id', id)
     .select();
-
   console.log(result);
-
   return result.data;
 };
 
@@ -37,7 +53,6 @@ export const updateTodos = async (id: number, task: string) => {
     })
     .eq('id', id)
     .select();
-
   return result.data;
 };
 

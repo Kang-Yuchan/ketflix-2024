@@ -1,12 +1,14 @@
 'use client';
 
+import { User } from '@/types/types';
+import Error from 'next/error';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const useUser = () => {
-  const [cachedUser, setCachedUser] = useState(null);
+const useUser = (): { user: User; error: Error; isLoading: boolean } => {
+  const [cachedUser, setCachedUser] = useState<User | null>(null);
 
   const { data: user, error } = useSWR(
     '/api/projects/to-do-app/auth',

@@ -8,35 +8,43 @@ import { Button } from '@/components/ui/button';
 import { SendPlaneIcon } from '@/components/icons/send-plane-icon';
 import { FilePenIcon } from '@/components/icons/file-pen-icon';
 import { TrashIcon } from '@/components/icons/trash-icon';
-import { Checkbox } from '@/components/ui/checkbox';
+import { updateTodoIsCompleted } from '@/actions/todos/todo.action';
 
 type Props = {
   todo: Todo;
-  inputMode: boolean;
-  onChangeCheck: (id: number) => void;
+  isTextMode: boolean;
+  onChangeCheck: (id: number, is_complete: boolean) => void;
   onClickSendTask: (id: number, task: string) => void;
   onClickDelete: (id: number) => void;
 };
 
 const TodoCard = ({
   todo,
-  inputMode = true,
+  isTextMode = true,
   onChangeCheck,
   onClickSendTask,
   onClickDelete,
 }: Props) => {
-  const [inputModeState, setInputModeState] = useState(inputMode);
+  const [isTextModeState, setIsTextModeState] = useState(isTextMode);
   const [inputText, setInputText] = useState(todo.task);
+  const [checked, setChecked] = useState(todo.is_complete);
+
+  const handleCheckboxChange = async () => {
+    const newCheck = !checked;
+    setChecked(newCheck);
+    onChangeCheck(todo.id, newCheck);
+  };
 
   return (
     <Card className="p-4">
       <div className="flex items-center justify-between gap-3">
         <div className="flex w-full items-center gap-2">
-          {inputModeState ? (
+          {isTextModeState ? (
             <>
-              <Checkbox
-                checked={todo.is_complete}
-                onChange={() => onChangeCheck(todo.id)}
+              <input
+                type="checkbox"
+                checked={checked}
+                onChange={handleCheckboxChange}
               />
               <p className="text-sm font-medium">{todo.task}</p>
             </>
@@ -49,12 +57,12 @@ const TodoCard = ({
           )}
         </div>
         <div className="flex items-center gap-2">
-          {inputModeState ? (
+          {isTextModeState ? (
             <Button
               variant="ghost"
               size="icon"
               className="rounded-full"
-              onClick={() => setInputModeState(!inputMode)}
+              onClick={() => setIsTextModeState(!isTextModeState)}
             >
               <FilePenIcon className="h-4 w-4" />
             </Button>

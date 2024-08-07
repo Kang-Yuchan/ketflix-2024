@@ -4,6 +4,7 @@ import {
   createTodos,
   deleteTodosSoft,
   getTodos,
+  updateTodoIsCompleted,
   updateTodos,
 } from '@/actions/todos/todo.action';
 import { Todo } from '@/types/types';
@@ -30,13 +31,18 @@ const useTodos = (userId = '') => {
     onGetTodos();
   }, [onGetTodos]);
 
-  const onCreateEmptyTodos = async () => {
-    await createTodos('');
+  const onCreateEmptyTodos = async (userId: string) => {
+    await createTodos(userId, '');
     await onGetTodos();
   };
 
   const onUpdateTodos = async (id: number, task: string) => {
     await updateTodos(id, task);
+    await onGetTodos();
+  };
+
+  const onUpdateTodoIsCompleted = async (id: number, is_complete: boolean) => {
+    await updateTodoIsCompleted(id, is_complete);
     await onGetTodos();
   };
 
@@ -50,6 +56,7 @@ const useTodos = (userId = '') => {
     isLoading,
     onCreateEmptyTodos,
     onUpdateTodos,
+    onUpdateTodoIsCompleted,
     onDeleteTodos,
   };
 };

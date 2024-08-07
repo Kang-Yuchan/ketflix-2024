@@ -2,23 +2,30 @@
 
 import { CheckIcon } from '@/components/icons/check-icon';
 import { CrossIcon } from '@/components/icons/cross-icon';
-import { FilePenIcon } from '@/components/icons/file-pen-icon';
 import { FilterIcon } from '@/components/icons/filter-icon';
 import { GithubIcon } from '@/components/icons/github-icon';
 import { GoogleIcon } from '@/components/icons/google-icon';
 import { ListIcon } from '@/components/icons/list-icon';
 import { PlusIcon } from '@/components/icons/plus-icon';
-import { TrashIcon } from '@/components/icons/trash-icon';
 import { Button } from '@/components/ui/button';
 import { Card, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
+import useTodos from '@/hooks/useTodos';
 import useUser from '@/hooks/useUser';
 import { supabase } from '@/lib/supabase/client';
+import TodoCard from './components/TodoCard';
 
 const TodoApp = () => {
   const { user, error, isLoading } = useUser();
+  const {
+    todos,
+    onCreateEmptyTodos,
+    onUpdateTodos,
+    onUpdateTodoIsCompleted,
+    onDeleteTodos,
+    isLoading: isTodosLoading,
+  } = useTodos(user ? user.id : '');
 
-  if (isLoading) {
+  if (isLoading || isTodosLoading) {
     return <div>Loading...</div>;
   }
 
@@ -49,10 +56,16 @@ const TodoApp = () => {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <h1 className="text-3xl font-bold">Todo App</h1>
-              <Button variant="outline" className="flex items-center gap-2">
-                <PlusIcon className="h-4 w-4" />
-                Add Todo
-              </Button>
+              {user && (
+                <Button
+                  variant="outline"
+                  className="flex items-center gap-2"
+                  onClick={() => onCreateEmptyTodos(user.id)}
+                >
+                  <PlusIcon className="h-4 w-4" />
+                  Add Todo
+                </Button>
+              )}
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between">
@@ -75,45 +88,26 @@ const TodoApp = () => {
                 </div>
               </div>
               <div className="space-y-2">
-                <Card className="p-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Checkbox />
-                      <span className="text-sm font-medium">
-                        Finish the design for the new website
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="rounded-full"
-                      >
-                        <FilePenIcon className="h-4 w-4" />
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="rounded-full"
-                      >
-                        <TrashIcon className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </Card>
+                {todos?.map((todo) => (
+                  <TodoCard
+                    key={todo.id}
+                    todo={todo}
+                    isTextMode={todo.task.length > 0 ? true : false}
+                    onChangeCheck={onUpdateTodoIsCompleted}
+                    onClickSendTask={onUpdateTodos}
+                    onClickDelete={onDeleteTodos}
+                  />
+                ))}
               </div>
             </div>
           </div>
           {user && user.email ? (
-            <div>
-              <div>User: {user?.email}</div>
-              <Button
-                onClick={handleOAuthLogout}
-                className="inline-flex w-full items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-              >
-                Sign out
-              </Button>
-            </div>
+            <Button
+              onClick={handleOAuthLogout}
+              className="inline-flex w-full items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+            >
+              Sign out
+            </Button>
           ) : (
             <div className="space-y-6">
               <Card className="p-4">
