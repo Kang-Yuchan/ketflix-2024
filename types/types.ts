@@ -8,3 +8,5 @@ export type User = {
   id: string;
   email: string;
 };
+
+export type TodoFilerBy = 'all' | 'checked' | 'not-checked';

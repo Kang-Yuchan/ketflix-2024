@@ -7,12 +7,13 @@ import {
   updateTodoIsCompleted,
   updateTodos,
 } from '@/actions/todos/todo.action';
-import { Todo } from '@/types/types';
+import { Todo, TodoFilerBy } from '@/types/types';
 import { useCallback, useEffect, useState } from 'react';
 
 const useTodos = (userId = '') => {
   const [isLoading, setIsLoading] = useState(false);
   const [todoList, setTodoList] = useState<Todo[]>();
+  const [filterBy, setFilterBy] = useState<TodoFilerBy>('all');
 
   const onGetTodos = useCallback(async () => {
     setIsLoading(true);
@@ -30,6 +31,17 @@ const useTodos = (userId = '') => {
   useEffect(() => {
     onGetTodos();
   }, [onGetTodos]);
+
+  const filteredTodos = (filterBy: TodoFilerBy) => {
+    switch (filterBy) {
+      case 'checked':
+        return todoList?.filter((todo) => todo.is_complete);
+      case 'not-checked':
+        return todoList?.filter((todo) => !todo.is_complete);
+      default:
+        return todoList;
+    }
+  };
 
   const onCreateEmptyTodos = async (userId: string) => {
     await createTodos(userId, '');
@@ -52,8 +64,10 @@ const useTodos = (userId = '') => {
   };
 
   return {
-    todos: todoList,
+    todos: filteredTodos(filterBy),
     isLoading,
+    filterBy,
+    setFilterBy,
     onCreateEmptyTodos,
     onUpdateTodos,
     onUpdateTodoIsCompleted,

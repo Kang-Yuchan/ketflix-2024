@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { SendPlaneIcon } from '@/components/icons/send-plane-icon';
 import { FilePenIcon } from '@/components/icons/file-pen-icon';
 import { TrashIcon } from '@/components/icons/trash-icon';
-import { updateTodoIsCompleted } from '@/actions/todos/todo.action';
 
 type Props = {
   todo: Todo;

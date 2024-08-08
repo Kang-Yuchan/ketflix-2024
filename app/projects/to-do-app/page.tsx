@@ -1,5 +1,6 @@
 'use client';
 
+import { ReactNode } from 'react';
 import { CheckIcon } from '@/components/icons/check-icon';
 import { CrossIcon } from '@/components/icons/cross-icon';
 import { FilterIcon } from '@/components/icons/filter-icon';
@@ -13,11 +14,29 @@ import useTodos from '@/hooks/useTodos';
 import useUser from '@/hooks/useUser';
 import { supabase } from '@/lib/supabase/client';
 import TodoCard from './components/TodoCard';
+import { TodoFilerBy } from '@/types/types';
+
+const filtered_buttons: { filterBy: TodoFilerBy; icon: ReactNode }[] = [
+  {
+    filterBy: 'checked',
+    icon: <CheckIcon className="h-4 w-4" />,
+  },
+  {
+    filterBy: 'not-checked',
+    icon: <CrossIcon className="h-4 w-4" />,
+  },
+  {
+    filterBy: 'all',
+    icon: <ListIcon className="h-4 w-4" />,
+  },
+];
 
 const TodoApp = () => {
   const { user, error, isLoading } = useUser();
   const {
     todos,
+    filterBy,
+    setFilterBy,
     onCreateEmptyTodos,
     onUpdateTodos,
     onUpdateTodoIsCompleted,
@@ -76,15 +95,16 @@ const TodoApp = () => {
                   <span className="text-sm font-medium">Filter by:</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button variant="ghost" size="icon" className="rounded-full">
-                    <CheckIcon className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon" className="rounded-full">
-                    <CrossIcon className="h-4 w-4" />
-                  </Button>
-                  <Button variant="ghost" size="icon" className="rounded-full">
-                    <ListIcon className="h-4 w-4" />
-                  </Button>
+                  {filtered_buttons.map((btn) => (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className={`rounded-full ${filterBy === btn.filterBy ? 'pointer-events-none bg-accent' : ''}`}
+                      onClick={() => setFilterBy(btn.filterBy)}
+                    >
+                      {btn.icon}
+                    </Button>
+                  ))}
                 </div>
               </div>
               <div className="space-y-2">
