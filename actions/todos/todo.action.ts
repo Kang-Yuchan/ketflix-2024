@@ -8,6 +8,9 @@ export const getTodos = async (userId: string) => {
     .from('todos')
     .select('*')
     .is('deleted_at', null)
+    .order('updated_at', {
+      ascending: true,
+    })
     .eq('user_id', userId);
 
   return result.data;
