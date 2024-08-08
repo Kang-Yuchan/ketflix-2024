@@ -27,11 +27,8 @@ export default function Header() {
           onClick={handleClickThemeToggle}
           className="bg-white hover:bg-slate-200"
         >
-          {isDarkMode ? (
-            <SunIcon className="h-5 w-5 fill-[#121212]" />
-          ) : (
-            <MoonIcon className="h-5 w-5 fill-[#121212]" />
-          )}
+          <SunIcon className="hidden h-5 w-5 fill-[#121212] dark:block" />
+          <MoonIcon className="h-5 w-5 fill-[#121212] dark:hidden" />
         </Button>
         <Link
           href="/projects"
