@@ -15,6 +15,7 @@ import useUser from '@/hooks/useUser';
 import { supabase } from '@/lib/supabase/client';
 import TodoCard from './components/TodoCard';
 import { TodoFilerBy } from '@/types/types';
+import LoginForm from './components/LoginForm';
 
 const filtered_buttons: { filterBy: TodoFilerBy; icon: ReactNode }[] = [
   {
@@ -121,38 +122,13 @@ const TodoApp = () => {
               </div>
             </div>
           </div>
-          {user && user.email ? (
-            <Button
-              onClick={handleOAuthLogout}
-              className="inline-flex w-full items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-            >
-              Sign out
-            </Button>
-          ) : (
-            <div className="space-y-6">
-              <Card className="p-4">
-                <CardHeader>
-                  <CardTitle>Login</CardTitle>
-                </CardHeader>
-                <CardFooter className="flex flex-col gap-3">
-                  <Button
-                    onClick={() => handleOAuthLogin('google')}
-                    className="inline-flex w-full items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                  >
-                    <GoogleIcon className="mr-2 h-4 w-4" />
-                    Sign in with Google
-                  </Button>
-                  <Button
-                    onClick={() => handleOAuthLogin('github')}
-                    className="inline-flex w-full items-center justify-center rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-                  >
-                    <GithubIcon className="mr-2 h-4 w-4" />
-                    Sign in with GitHub
-                  </Button>
-                </CardFooter>
-              </Card>
-            </div>
-          )}
+          <div className="space-y-6">
+            <LoginForm
+              user={user}
+              handleOAuthLogin={handleOAuthLogin}
+              handleOAuthLogout={handleOAuthLogout}
+            />
+          </div>
         </div>
       </div>
     </div>
