@@ -2,6 +2,7 @@ import { createServerSideClient } from '@/lib/supabase/server';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
+  const overrideUrl = process.env.NEXT_PUBLIC_HOME_URL;
   const { searchParams } = new URL(request.url);
 
   const code = searchParams.get('code');
@@ -12,10 +13,10 @@ export async function GET(request: Request) {
     const { error } = await supabase.auth.exchangeCodeForSession(code);
 
     if (error) {
-      return NextResponse.redirect(`${process.env.NEXT_PUBLIC_HOME_URL}`);
+      return NextResponse.redirect(`${overrideUrl}`);
     }
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_HOME_URL}${next}`);
+    return NextResponse.redirect(`${overrideUrl}${next}`);
   }
 
-  return NextResponse.redirect(`${process.env.NEXT_PUBLIC_HOME_URL}`);
+  return NextResponse.redirect(`${overrideUrl}`);
 }

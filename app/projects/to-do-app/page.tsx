@@ -76,7 +76,7 @@ const TodoApp = () => {
           <div className="space-y-6">
             <div className="flex items-center justify-between">
               <h1 className="text-3xl font-bold">Todo App</h1>
-              {user && (
+              {user && user.email && (
                 <Button
                   variant="outline"
                   className="flex items-center gap-2"
