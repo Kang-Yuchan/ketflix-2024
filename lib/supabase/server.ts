@@ -4,7 +4,7 @@ import { createServerClient } from '@supabase/ssr';
 // - ServerActions, RouterHandler
 export const createServerSideClient = () => {
   const cookieStore = cookies();
-
+  console.log(cookieStore);
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
