@@ -13,9 +13,9 @@ export default async function Home() {
                 Yuchan Kang
               </h1>
               <h2 className="text-xl font-medium">Front-End Developer</h2>
-              <p className="max-w-[600px] md:text-xl">
-                自信、好奇心、謙遜を忘れないエンジニア
-              </p>
+              {/* <p className="max-w-[600px] md:text-xl">
+                
+              </p> */}
             </div>
           </div>
           <Image
