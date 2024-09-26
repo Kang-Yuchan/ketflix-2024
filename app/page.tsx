@@ -24,6 +24,7 @@ export default async function Home() {
             height="550"
             alt="Avatar"
             className="mx-auto aspect-square overflow-hidden rounded-xl object-cover sm:w-full lg:order-last"
+            priority
           />
         </div>
       </div>
